@@ -1,0 +1,401 @@
+@import "tailwindcss";
+
+:root {
+  --font-galgo: "Galgo Condensed", "Helvetica Neue", Arial, sans-serif;
+  --font-oswald: "Oswald", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-teko: "Teko", Arial, sans-serif;
+}
+
+@font-face {
+  font-family: "Galgo Condensed";
+  src:
+    url("/fonts/galgo-condensed/Galgo.woff") format("woff"),
+    url("/fonts/galgo-condensed/Galgo.ttf") format("truetype"),
+    url("/fonts/galgo-condensed/Galgo.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Teko";
+  src: url("/fonts/teko/Teko-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Teko";
+  src: url("/fonts/teko/Teko-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Teko";
+  src: url("/fonts/teko/Teko-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Teko";
+  src: url("/fonts/teko/Teko-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Teko";
+  src: url("/fonts/teko/Teko-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* Oswald (light/regular/bold) */
+@font-face {
+  font-family: "Oswald";
+  src: url("/fonts/oswald/Oswald-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Oswald";
+  src: url("/fonts/oswald/Oswald-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Oswald";
+  src: url("/fonts/oswald/Oswald-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Optional: utility shortcuts */
+.font-galgo {
+  font-family: "Galgo Condensed", "Helvetica Neue", Arial, sans-serif;
+}
+.font-oswald {
+  font-family: "Oswald", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  font-family: "Teko", Arial, sans-serif;
+  letter-spacing: 0.1em;
+}
+
+@keyframes hero-img-in {
+0% { opacity: 0; transform: translateX(-40px); }
+100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;               /* scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+  background: #32348D;        /* background color */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #112a63;  /* scrollbar thumb color */
+  border-radius: 6px;
+  border: 2px solid #32348D;  /* space around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #1a3570;  /* hover color */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #112a63 #32348D; /* thumb, track */
+}
+
+
+@keyframes hero-text-in {
+0% { opacity: 0; transform: translateX(40px); }
+100% { opacity: 1; transform: translateX(0); }
+}
+
+body.app-ready .hero-img-enter,
+body.app-ready .hero-text-enter {
+opacity: 0;
+will-change: opacity, transform;
+}
+
+/* Image (from left) */
+body.app-ready .hero-img-enter.play {
+animation: hero-img-in 0.7s ease-out forwards;
+}
+
+/* Text (from right, with 100ms delay) */
+body.app-ready .hero-text-enter.play {
+animation: hero-text-in 0.7s ease-out 0.1s forwards;
+}
+
+body.app-ready .hero-img-enter { transform: translateX(-40px); }
+body.app-ready .hero-text-enter { transform: translateX(40px); }
+
+
+@media (prefers-reduced-motion: reduce) {
+.hero-img-enter,
+.hero-text-enter {
+animation: none !important;
+opacity: 1 !important;
+transform: none !important;
+}
+}
+
+/* Text slide-in */
+@keyframes text-slide-up {
+  0%   { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.text-slide-up {
+  animation: text-slide-up 900ms ease-out forwards;
+  will-change: opacity, transform;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.smooth-transform { transition: transform 700ms ease-in-out; }
+
+html, body {
+  font-family: var(--font-teko);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.1em;
+  margin: 0;
+  padding: 0;
+}
+
+@theme {
+  --text-ss: 0.8rem;
+  --text-xs: 1rem;
+  --text-sm: 1.5rem;
+  --text-lg: 2rem;
+  --text-xl: 3rem;
+  --text-xx: 4rem;
+  --text-tiny--line-height: 1.5rem;
+  --text-tiny--letter-spacing: 0.125rem;
+  --text-tiny--font-weight: 500;
+  --radius-5xl: 5rem;
+  --h-xxs: 1rem;   /* Extra extra small height */
+  --h-xs: 2rem;    /* Extra small h */
+  --h-sm: 4rem;    /* Small h */
+  --h-md: 6rem;    /* Medium h */
+  --h-lg: 8rem;    /* Large h */
+  --h-xl: 12rem;   /* Extra large h */
+  --h-2xl: 16rem;
+}
+
+/* IMPORTANT: Narrow the global transition override so it does not clobber generic .transition usage */
+body.app-ready .smooth-transform {
+  @apply transition-transform duration-1000 ease-in-out;
+}
+
+@keyframes wipe-ltr {
+  0%   { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes slide-ltr {
+  0%   { transform: translateX(-50px); }
+  100% { transform: translateX(0); }
+}
+@keyframes content-pop {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+body.app-ready .card-wipe {
+  position: relative;
+  clip-path: inset(0 100% 0 0); /* fully hidden from right side */
+  opacity: 0;                   /* fade controlled by animations below */
+  will-change: clip-path, opacity, transform;
+}
+
+.card-wipe {
+  position: relative;
+  clip-path: inset(0 100% 0 0); /* fully hidden from right side */
+  opacity: 0;                   /* fade controlled by animations below */
+  will-change: clip-path, opacity, transform;
+}
+
+body.app-ready .card-wipe-play {
+  --wipe-delay: 0s;
+  animation:
+    wipe-ltr 700ms ease-out var(--wipe-delay) forwards,
+    content-pop 500ms ease-out var(--wipe-delay) forwards;
+}
+.card-wipe-play {
+  --wipe-delay: 0s;
+  animation:
+    wipe-ltr 700ms ease-out var(--wipe-delay) forwards,
+    content-pop 500ms ease-out var(--wipe-delay) forwards;
+}
+
+body.app-ready .card-wipe-play-ltr {
+  --wipe-delay: 0s; /* override per card via inline style or a stagger class */
+  animation:
+    wipe-ltr 700ms ease-out var(--wipe-delay) forwards,
+    slide-ltr 700ms cubic-bezier(.22,.61,.36,1) var(--wipe-delay) forwards,
+    content-pop 500ms ease-out var(--wipe-delay) forwards;
+}
+
+.card-wipe-play-ltr {
+  --wipe-delay: 0s; /* override per card via inline style or a stagger class */
+  animation:
+    wipe-ltr 700ms ease-out var(--wipe-delay) forwards,
+    slide-ltr 700ms cubic-bezier(.22,.61,.36,1) var(--wipe-delay) forwards,
+    content-pop 500ms ease-out var(--wipe-delay) forwards;
+}
+
+/* Optional stagger delays for a nice cascade */
+body.app-ready .card-stagger-1 { animation-delay: 0.10s, 0.10s; }
+body.app-ready .card-stagger-2 { animation-delay: 0.20s, 0.20s; }
+body.app-ready .card-stagger-3 { animation-delay: 0.30s, 0.30s; }
+body.app-ready .card-stagger-4 { animation-delay: 0.40s, 0.40s; }
+body.app-ready .card-stagger-5 { animation-delay: 0.50s, 0.50s; }
+
+@keyframes text-wipe {
+  0%   { opacity: 0; transform: translateX(-40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Default hidden state for text elements */
+body.app-ready .text-wipe {
+  opacity: 0;
+  transform: translateX(-40px);  /* shift left initially */
+  will-change: opacity, transform;
+}
+
+body.app-ready .text-wipe-play {
+  --wipe-delay: 0s;
+  animation: text-wipe 0.7s cubic-bezier(.22, .61, .36, 1) var(--wipe-delay) forwards;
+}
+
+body.app-ready .text-stagger-0 { --wipe-delay: 0s; }
+body.app-ready .text-stagger-1 { --wipe-delay: 0.2s; }
+body.app-ready .text-stagger-2 { --wipe-delay: 0.4s; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card-wipe,
+  .card-wipe-play-ltr {
+    clip-path: inset(0 0 0 0) !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+@keyframes slide-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+html { scrollbar-color: #4a4fc2 transparent; scrollbar-width: thin; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background-color: #4a4fc2; border-radius: 9999px; border: 0 solid transparent; }
+}
+
+body.app-ready .slide-in-left {
+  opacity: 0;
+  animation: slide-in-left 0.7s ease-out forwards;
+}
+
+body.app-ready .slide-in-right {
+  opacity: 0;
+  animation: slide-in-right 0.7s ease-out forwards;
+}
+/* Ensure animated elements start hidden even before body.app-ready is set */
+.slide-in-left,
+.slide-in-right {
+  opacity: 0;
+}
+
+/* When play is added (by the hook), allow them to become visible */
+.slide-in-left.play,
+.slide-in-right.play {
+  opacity: 1;
+}
+
+/* Optional: Add stagger delays */
+body.app-ready .slide-delay-0 {
+  animation-delay: 0s;
+}
+
+
+body.app-ready .slide-delay-1 {
+  animation-delay: 0.2s;
+}
+
+body.app-ready .slide-delay-2 {
+  animation-delay: 0.4s;
+}
+
+.no-fade.opacity-0 { opacity: 1 !important; }
+.no-fade.opacity-100 { opacity: 1 !important; }
+body.app-ready .slide-delay-3 {
+  animation-delay: 0.6s;
+}
+
+body.app-ready .slide-delay-4 {
+  animation-delay: 0.8s;
+}
+
+textarea {
+  resize: none;
+}
+
+
+body.app-ready .slide-in-left { opacity: 0; }
+body.app-ready .slide-in-left.play {
+  animation: slide-in-left 0.7s ease-out forwards;
+}
+
+body.app-ready .slide-in-right { opacity: 0; }
+body.app-ready .slide-in-right.play {
+  animation: slide-in-right 0.7s ease-out forwards;
+}
+
+/* Hide the floating scroll-to-top button when the mobile nav is open */
+body.nav-open .back-to-top {
+  display: none !important;
+}
