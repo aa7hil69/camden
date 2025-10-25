@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Home } from "./pages/home";
 import { Contact } from "./pages/contact";
-import { Client } from "./pages/Client";
+import { Client } from "./pages/client";
 import { Products } from "./pages/products";
 import { ScrollToTopButton } from "./components/scrolltop";
 import { Notfound } from "./pages/notfound";
