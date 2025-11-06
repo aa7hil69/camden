@@ -19,7 +19,7 @@ export const Hero = () => {
           <div className="relative w-full max-w-[320px] h-[360px] sm:h-[400px] md:w-[300px] md:h-[515px] mt-1">
             <div className="pointer-events-none absolute inset-0 rounded-lg" />
             <img
-              src="/picsin/portrait.png"
+              src="picsin/portrait.jpeg"
               alt="Portrait"
               className="w-full h-full object-cover object-[35%_15%] select-none rounded-lg"
               draggable={false}
