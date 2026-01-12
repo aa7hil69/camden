@@ -1,4 +1,4 @@
-    export default async function handler(req, res) {
+export default async function handler(req, res) {
   try {
     const url = `${process.env.GALLERIES_API_URL}?key=${process.env.GALLERIES_API_KEY}`;
 
@@ -13,6 +13,8 @@
     const data = await response.json();
     return res.status(200).json(data);
   } catch (error) {
+    console.error("Gallery API error:", error);
+
     return res.status(500).json({
       error: "Server error while fetching galleries",
     });
