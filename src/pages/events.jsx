@@ -4,22 +4,24 @@ import {Footer} from "../components/Footer";
 import { Reveal } from "../components/Reveal";
 
 
-export const Client = () => {
+export const Events = () => {
   return (
     
     <div className="bg-[#32348D]">
         <div className="min-h-screen text-foreground overflow-x-hidden ">
         <Navbar />
         <main className="bg-[#32348D] text-black"> 
-      
+     
         </main>
         
       </div>
       <div>
         <Reveal  fade={false}>
-        <Footer className="bg-[#32348D]"/>
+        <Footer className="bg-white"/>
         </Reveal>
       </div>
     </div>
   );
 }
+
+
