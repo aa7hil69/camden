@@ -83,7 +83,7 @@ export const Navbar = () => {
 
           {/* Right group */}
           <ul className="flex-1 flex items-center justify-start gap-6 md:gap-8 lg:gap-10 text-white text-base md:text-sm font-normal font-teko pl-3 md:pl-6 min-w-0">
-            <li><Link to="/clients" className={linkClass("/events")}>EVENTS</Link></li>
+            <li><Link to="/events" className={linkClass("/events")}>EVENTS</Link></li>
             <li><Link to="/products" className={linkClass("/products")}>PRODUCTS</Link></li>
           </ul>
         </div>
