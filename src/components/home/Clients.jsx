@@ -154,7 +154,7 @@ useEffect(() => {
   }, [paraInView, paraControls]);
 
   return (
-    <div id="clients" className="min-h-screen bg-[#061d42] text-white antialiased px-4 sm:px-6 lg:px-8">
+    <div id="clients" className="min-h-screen bg-[#32348d] text-white antialiased px-4 sm:px-6 lg:px-8">
       <div className="py-16">
         <div className="container mx-auto max-w-7xl text-center">
           <div ref={headerRef}>

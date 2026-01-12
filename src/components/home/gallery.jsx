@@ -74,7 +74,7 @@ export const Gallery = () => {
   }, []);
 
   return (
-    <section className="bg-[#061d42] py-12" id="gallery">
+    <section className="bg-[#32348d] py-12" id="gallery">
       <div className="mx-auto max-w-7xl px-4">
         <motion.div
           ref={headerRef}
