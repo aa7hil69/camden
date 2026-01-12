@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Home } from "./pages/home";
 import { Contact } from "./pages/contact";
-import { Client } from "./pages/client";
+import { Events } from "./pages/events";
 import { Products } from "./pages/products";
 import { ScrollToTopButton } from "./components/scrolltop";
 import { Notfound } from "./pages/notfound";
@@ -82,7 +82,7 @@ const AppShell = ({ appReady }) => {
       <Routes>
         <Route path="/" element={<Home appReady={appReadyAfterSplash} />} />
         <Route path="/contact" element={<Contact appReady={appReadyAfterSplash} />} />
-        <Route path="/clients" element={<Client appReady={appReadyAfterSplash} />} />
+        <Route path="/events" element={<Events appReady={appReadyAfterSplash} />} />
         <Route path="/products" element={<Products appReady={appReadyAfterSplash} />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
