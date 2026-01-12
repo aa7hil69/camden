@@ -168,10 +168,6 @@ useEffect(() => {
             </motion.h2>
           </div>
 
-          <motion.div initial="hidden" animate={headerControls} variants={slideInFromLeft} className="mt-3 flex justify-center">
-            <div className="h-1 w-16 sm:w-24 rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-purple-500" />
-          </motion.div>
-
           <motion.p
             ref={paraRef}
             initial="hidden"
