@@ -84,7 +84,7 @@ const AppShell = ({ appReady }) => {
         <Route path="/contact" element={<Contact appReady={appReadyAfterSplash} />} />
         <Route path="/events" element={<Events appReady={appReadyAfterSplash} />} />
         <Route path="/products" element={<Products appReady={appReadyAfterSplash} />} />
-        <Route path="*" element={<Notfound />} />
+        <Route path="/*" element={<Notfound />} />
       </Routes>
 
       <ScrollToTopButton showAfter={200} className="back-to-top" />
