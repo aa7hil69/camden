@@ -106,7 +106,7 @@ export const Clients = () => {
   }, [headerInView, headerControls]);
 
   return (
-    <div id="clients" className="min-h-screen bg-[#061d42] text-white px-4">
+    <div id="clients" className="min-h-screen bg-[#32348d] text-white px-4">
       <div className="py-16 max-w-7xl mx-auto">
         <div ref={headerRef} className="text-center">
           <motion.h2
