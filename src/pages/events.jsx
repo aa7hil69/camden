@@ -63,12 +63,12 @@ export const Events = () => {
           Events
         </h1>
 
-        {/* Gold loading bar */}
+        {/* White loading bar */}
         {loading && (
           <div className="flex justify-center py-10">
             <div className="w-56 h-1 rounded-full bg-white/10 overflow-hidden">
               <motion.div
-                className="h-full bg-[#C9A24D] shadow-[0_0_8px_rgba(201,162,77,0.6)]"
+                className="h-full bg-[#FFFFFF] shadow-[0_0_8px_rgba(201,162,77,0.6)]"
                 initial={{ x: "-100%" }}
                 animate={{ x: "100%" }}
                 transition={{
@@ -98,7 +98,7 @@ export const Events = () => {
             {events.map((event) => (
               <article
                 key={event.id}
-                className="bg-[#0b0f14] rounded-xl overflow-hidden ring-1 ring-white/10 hover:ring-white/20 transition"
+                className="bg-[#0f224f] rounded-xl overflow-hidden ring-1 ring-white/10 hover:ring-white/20 transition"
               >
                 {event.image && (
                   <img
@@ -127,7 +127,7 @@ export const Events = () => {
                       href={event.link}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-block mt-4 text-[#C9A24D] hover:underline text-sm"
+                      className="inline-block mt-4 text-[#FFFFFF] hover:underline text-sm"
                     >
                       View Event →
                     </a>
