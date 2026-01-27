@@ -64,22 +64,22 @@ export const Events = () => {
         </h1>
 
         {/* White loading bar */}
-        {loading && (
-          <div className="flex justify-center py-10">
-            <div className="w-56 h-1 rounded-full bg-white/10 overflow-hidden">
-              <motion.div
-                className="h-full bg-[#FFFFFF] shadow-[0_0_8px_rgba(201,162,77,0.6)]"
-                initial={{ x: "-100%" }}
-                animate={{ x: "100%" }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1.4,
-                  ease: "easeInOut",
-                }}
-              />
-            </div>
-          </div>
-        )}
+     {loading && (
+  <div className="flex justify-center py-10">
+    <div className="w-56 h-1 rounded-full bg-white/20 overflow-hidden">
+      <motion.div
+        className="h-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+        initial={{ x: "-100%" }}
+        animate={{ x: "100%" }}
+        transition={{
+          repeat: Infinity,
+          duration: 1.4,
+          ease: "easeInOut",
+        }}
+      />
+    </div>
+  </div>
+)}
 
         {error && (
           <p className="text-center text-red-400">
