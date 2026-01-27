@@ -193,7 +193,7 @@ export const Gallery = () => {
 
     async function fetchGallery() {
       try {
-        const res = await fetch("/api/galleries");
+        const res = await fetch("/api/gallery");
         if (!res.ok) throw new Error("Failed to fetch gallery");
 
         const data = await res.json();
