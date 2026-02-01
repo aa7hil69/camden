@@ -155,7 +155,14 @@
 // };
 
 import React, { useEffect, useState, useRef } from "react";
-import { motion, useAnimation, useInView, useAnimationFrame, useMotionValue } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useAnimation,
+  useInView,
+  useAnimationFrame,
+  useMotionValue,
+} from "framer-motion";
 
 /* ---------------- Animations ---------------- */
 
@@ -179,6 +186,7 @@ const textStagger = {
 export const Gallery = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [active, setActive] = useState(null); // 🔥 lightbox state
 
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { amount: 0.6 });
@@ -193,7 +201,7 @@ export const Gallery = () => {
 
     async function fetchGallery() {
       try {
-        const res = await fetch("/api/gallery");
+        const res = await fetch("/api/galleries");
         if (!res.ok) throw new Error("Failed to fetch gallery");
 
         const data = await res.json();
@@ -223,42 +231,100 @@ export const Gallery = () => {
   }, []);
 
   return (
-    <section className="bg-[#32348D] py-4" id="gallery">
-      <div className="mx-auto max-w-7xl px-4">
-        <motion.div
-          ref={headerRef}
-          variants={textStagger}
-          initial="hidden"
-          animate={headerControls}
-          className="text-center"
-        >
-          <motion.h2
-            variants={slideInFromRight}
-            className="text-white text-3xl sm:text-4xl md:text-5xl font-teko tracking-wide"
+    <>
+      <section className="bg-[#020406] py-4" id="gallery">
+        <div className="mx-auto max-w-7xl px-4">
+          <motion.div
+            ref={headerRef}
+            variants={textStagger}
+            initial="hidden"
+            animate={headerControls}
+            className="text-center"
           >
-            Gallery
-          </motion.h2>
-        </motion.div>
-      </div>
+            <motion.h2
+              variants={slideInFromRight}
+              className="text-white text-3xl sm:text-4xl md:text-5xl font-teko tracking-wide"
+            >
+              Gallery
+            </motion.h2>
+          </motion.div>
+        </div>
 
-      <div className="mx-auto max-w-7xl px-4 mt-8">
-        {loading ? (
-          <p className="text-center text-white/70">Loading...</p>
-        ) : items.length ? (
-          <AnimatedGrid items={items} />
-        ) : (
-          <p className="text-center text-white/70">No images found.</p>
+        <div className="mx-auto max-w-7xl px-4 mt-8">
+          {loading ? (
+            <p className="text-center text-white/70">Loading...</p>
+          ) : items.length ? (
+            <AnimatedGrid
+              items={items}
+              onOpen={setActive}
+              pausedExternally={!!active}
+            />
+          ) : (
+            <p className="text-center text-white/70">No images found.</p>
+          )}
+        </div>
+      </section>
+
+      {/* ================= LIGHTBOX ================= */}
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md
+                       flex items-center justify-center px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActive(null)}
+          >
+            <motion.div
+              className="relative max-w-5xl w-full bg-[#0b1d3a]
+                         rounded-2xl overflow-hidden shadow-2xl"
+              initial={{ scale: 0.9, y: 40, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 40, opacity: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close */}
+              <button
+                onClick={() => setActive(null)}
+                className="absolute top-4 right-4 text-white/80
+                           hover:text-white text-2xl"
+              >
+                ✕
+              </button>
+
+              {/* Image */}
+              <div className="max-h-[70vh] bg-black flex items-center justify-center">
+                <img
+                  src={active.src}
+                  alt={active.title}
+                  className="max-h-[70vh] w-auto object-contain"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="p-6 sm:p-8">
+                <h3 className="font-teko text-2xl sm:text-3xl text-white mb-4">
+                  {active.title}
+                </h3>
+                <p className="text-white/80 leading-relaxed text-sm sm:text-base">
+                  {active.description}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
-      </div>
-    </section>
+      </AnimatePresence>
+    </>
   );
 };
 
-/* ---------------- Grid ---------------- */
+/* ---------------- Animated Grid ---------------- */
 
-const SPEED = 40; // px per second (adjust to taste)
+const SPEED = 40;
 
-const AnimatedGrid = ({ items }) => {
+const AnimatedGrid = ({ items, onOpen, pausedExternally }) => {
   const trackRef = useRef(null);
   const x = useMotionValue(0);
 
@@ -267,20 +333,16 @@ const AnimatedGrid = ({ items }) => {
 
   const loopItems = [...items, ...items];
 
-  /* Measure width once items are rendered */
   useEffect(() => {
     if (!trackRef.current) return;
     setWidth(trackRef.current.scrollWidth / 2);
   }, [items]);
 
-  /* Smooth continuous scrolling */
   useAnimationFrame((_, delta) => {
-    if (paused || !width) return;
+    if (paused || pausedExternally || !width) return;
 
     const move = (SPEED * delta) / 1000;
     const next = x.get() - move;
-
-    // Seamless loop
     x.set(next <= -width ? 0 : next);
   });
 
@@ -304,23 +366,28 @@ const AnimatedGrid = ({ items }) => {
         {loopItems.map((img, i) => (
           <article
             key={`${img.id}-${i}`}
-            className="
-              w-72 flex-shrink-0
-              rounded-xl overflow-hidden
-              bg-[#112a63]
-              ring-1 ring-white/10
-            "
+            className="w-72 flex-shrink-0
+                       rounded-xl overflow-hidden
+                       bg-[#080c10]
+                       ring-1 ring-white/10"
           >
-            <div className="h-48 overflow-hidden">
+            {/* IMAGE (CLICK TO ZOOM) */}
+            <div
+              className="h-48 overflow-hidden cursor-pointer"
+              onClick={() => onOpen(img)}
+            >
               <img
                 src={img.src}
                 alt={img.title}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover
+                           transition-transform duration-500
+                           hover:scale-105"
                 draggable={false}
                 loading="lazy"
               />
             </div>
 
+            {/* CONTENT */}
             <div className="px-4 py-3">
               <h3 className="text-white text-sm font-semibold">
                 {img.title}
@@ -328,6 +395,14 @@ const AnimatedGrid = ({ items }) => {
               <p className="text-white/70 text-xs line-clamp-3">
                 {img.description}
               </p>
+
+              <button
+                onClick={() => onOpen(img)}
+                className="mt-2 text-xs font-semibold
+                           text-blue-400 hover:underline"
+              >
+                Read more →
+              </button>
             </div>
           </article>
         ))}
@@ -335,66 +410,3 @@ const AnimatedGrid = ({ items }) => {
     </div>
   );
 };
-
-  
-
-  // const container = {
-  //   hidden: { opacity: 0 },
-  //   show: { opacity: 1, transition: { staggerChildren: 0.08 } },
-  // };
-
-  // const item = {
-  //   hidden: { opacity: 0, x: 40 },
-  //   show: {
-  //     opacity: 1,
-  //     x: 0,
-  //     transition: { type: "spring", stiffness: 260, damping: 26 },
-  //   },
-  // };
-
-  // return (
-  //   <motion.div
-  //     variants={container}
-  //     initial="hidden"
-  //     whileInView="show"
-  //     viewport={{ once: true, amount: 0.25 }}
-  //     className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory flex-row-reverse no-scrollbar"
-  //   >
-  //     {items.map((img) => (
-  //       <motion.article
-  //         key={img.id}
-  //         variants={item}
-  //         className="flex-shrink-0
-  //                   h-90
-  //                   w-70
-  //                   flex flex-col
-  //                   overflow-hidden
-  //                   rounded-xl
-  //                   bg-[#0b0f14]
-  //                   ring-1 ring-white/10
-  //                   snap-start"
-  //       >
-  //         {/* Image */}
-  //         <div className="h-48 w-full overflow-hidden">
-  //           <img
-  //             src={img.src}
-  //             alt={img.title}
-  //             className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-  //             loading="lazy"
-  //           />
-  //         </div>
-
-  //         {/* Content */}
-  //         <div className="flex flex-col flex-1 px-4 py-3">
-  //           <h3 className="text-white text-base font-semibold leading-tight">
-  //             {img.title}
-  //           </h3>
-  //           <p className="mt-1 text-white/70 text-xs leading-relaxed line-clamp-3">
-  //             {img.description}
-  //           </p>
-  //         </div>
-  //       </motion.article>
-  //     ))}
-  //   </motion.div>
-  // );
-
