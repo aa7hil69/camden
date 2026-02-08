@@ -176,19 +176,19 @@ export const Events = () => {
                 border border-white/10
                 rounded-2xl
                 p-8
-                bg-black
+                bg-[#292B7A]
                 hover:border-white/20
                 transition-colors
               "
             >
               {/* META */}
-              <div className="flex flex-wrap items-center gap-6 text-sm text-[#32348D] mb-4">
+              <div className="flex flex-wrap items-center gap-6 text-sm text-[#E5E5E5] mb-4">
                 <div className="flex items-center gap-2">
-                  <CalendarDays size={16} />
+                  <CalendarDays size={16} color="#C9A24D" />
                   <span>Posted On {event.date}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <User size={16} />
+                  <User size={16} color="#C9A24D" />
                   <span>Posted by Jessy Mathew International SPC</span>
                 </div>
               </div>
@@ -199,7 +199,7 @@ export const Events = () => {
               </h2>
 
               {/* DESCRIPTION */}
-              <p className="text-white/80 leading-relaxed text-justify max-w-5xl">
+              <p className="text-[#E5E5E5]/80 leading-relaxed text-justify max-w-5xl">
                 {event.description}
               </p>
 
