@@ -182,13 +182,13 @@ export const Events = () => {
               "
             >
               {/* META */}
-              <div className="flex flex-wrap items-center gap-6 text-sm text-[#E5E5E5] mb-4">
+              <div className="flex flex-wrap items-center gap-6 text-sm text-blue-300 mb-4">
                 <div className="flex items-center gap-2">
-                  <CalendarDays size={16} color="#C9A24D" />
+                  <CalendarDays size={16} color="white" />
                   <span>Posted On {event.date}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <User size={16} color="#C9A24D" />
+                  <User size={16} color="white" />
                   <span>Posted by Jessy Mathew International SPC</span>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export const Events = () => {
                   href={event.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-block mt-4 text-[#C9A24D] hover:underline"
+                  className="inline-block mt-4 text-blue-300  hover:underline"
                 >
                   More Info…
                 </a>

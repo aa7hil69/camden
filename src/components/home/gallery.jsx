@@ -231,8 +231,9 @@ export const Gallery = () => {
   }, []);
 
   return (
+    // gallery section is now blue #32348d
     <>
-      <section className="bg-[#020406] py-4" id="gallery">
+      <section className="bg-[#32348d] py-4" id="gallery">
         <div className="mx-auto max-w-7xl px-4">
           <motion.div
             ref={headerRef}
