@@ -270,7 +270,7 @@ export const Gallery = () => {
       <AnimatePresence>
         {active && (
           <motion.div
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md
+            className="fixed inset-0 z-50 bg-[#112a63] backdrop-blur-md
                        flex items-center justify-center px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -296,7 +296,7 @@ export const Gallery = () => {
               </button>
 
               {/* Image */}
-              <div className="max-h-[70vh] bg-[#112a63] flex items-center justify-center">
+              <div className="max-h-[70vh] bg-black flex items-center justify-center">
                 <img
                   src={active.src}
                   alt={active.title}
