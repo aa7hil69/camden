@@ -296,7 +296,7 @@ export const Gallery = () => {
               </button>
 
               {/* Image */}
-              <div className="max-h-[70vh] bg-black flex items-center justify-center">
+              <div className="max-h-[70vh] bg-[#112a63] flex items-center justify-center">
                 <img
                   src={active.src}
                   alt={active.title}
