@@ -270,7 +270,7 @@ export const Gallery = () => {
       <AnimatePresence>
         {active && (
           <motion.div
-            className="fixed inset-0 z-50 bg-[#112a63] backdrop-blur-md
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md
                        flex items-center justify-center px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -369,7 +369,7 @@ const AnimatedGrid = ({ items, onOpen, pausedExternally }) => {
             key={`${img.id}-${i}`}
             className="w-72 flex-shrink-0
                        rounded-xl overflow-hidden
-                       bg-[#080c10]
+                       bg-[#112a63]
                        ring-1 ring-white/10"
           >
             {/* IMAGE (CLICK TO ZOOM) */}
