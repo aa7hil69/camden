@@ -1,12 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { IoMapSharp, IoMailOpen } from 'react-icons/io5';
-import { FaPhone } from 'react-icons/fa6';
-import {
-  FaFacebookSquare,
-  FaInstagramSquare,
-  FaYoutubeSquare,
-  FaLinkedin,
-} from 'react-icons/fa';
+import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { IoMapSharp, IoMailOpen } from "react-icons/io5";
+import { FaPhone } from "react-icons/fa6";
+import { FaLinkedin } from "react-icons/fa";
 
 export const Footer = () => {
   const rootRef = useRef(null);
@@ -14,46 +10,34 @@ export const Footer = () => {
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
-
     const stopDrag = (e) => {
       e.preventDefault();
       e.stopPropagation();
     };
-
-    el.addEventListener('dragstart', stopDrag, true);
-    return () => el.removeEventListener('dragstart', stopDrag, true);
+    el.addEventListener("dragstart", stopDrag, true);
+    return () => el.removeEventListener("dragstart", stopDrag, true);
   }, []);
 
   return (
     <footer
       ref={rootRef}
-      className="w-full bg-[#32348d] text-white font-teko text-ss relative select-none"
-      style={{
-        WebkitUserSelect: 'none',
-        userSelect: 'none',
-        WebkitTouchCallout: 'none',
-        touchAction: 'manipulation',
-      }}
+      className="w-full bg-[#32348d] text-white font-teko text-ss relative"
       draggable={false}
       onDragStart={(e) => e.preventDefault()}
     >
-      {/* Background image */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: "url('/picsin/background.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
           zIndex: 0,
         }}
         aria-hidden="true"
       />
 
-      {/* Content */}
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 border-t border-white/10">
-        
-        {/* CONTACT US */}
         <div className="font-teko -mt-4 sm:-mt-8 lg:-mt-10 space-y-4 sm:space-y-6">
           <h3 className="text-lg sm:text-xl tracking-wide text-white mb-4 sm:mb-6">
             CONTACT US
@@ -93,7 +77,6 @@ export const Footer = () => {
           </ul>
         </div>
 
-        {/* LOCATION MAP */}
         <div className="font-teko -mt-4 sm:-mt-8 lg:-mt-10 space-y-4 sm:space-y-6">
           <h3 className="text-lg sm:text-xl tracking-wide text-white mb-4 sm:mb-6">
             LOCATION MAP
@@ -106,43 +89,53 @@ export const Footer = () => {
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              title="Location Map"
+              title="Office location map"
             />
           </div>
         </div>
 
-         <div className="font-teko -mt-4 sm:-mt-8 lg:-mt-10 space-y-4 sm:space-y-6">
-          <h3 className="text-lg sm:text-xl tracking-wide text-white mb-4 sm:mb-6">SOCIAL MEDIA</h3>
+        <div className="font-teko -mt-4 sm:-mt-8 lg:-mt-10 space-y-4 sm:space-y-6">
+          <h3 className="text-lg sm:text-xl tracking-wide text-white mb-4 sm:mb-6">
+            SOCIAL MEDIA
+          </h3>
           <p className="text-white text-sm font-light mt-4 sm:mt-6 mb-5 sm:mb-6 leading-6">
-            Find your next big opportunity with Camden — where top talent meets top employers!
+            Connect with Camden Imports &amp; Exports for trade enquiries and
+            partnership opportunities.
           </p>
           <div className="flex items-center gap-3 sm:gap-4 mt-4 sm:mt-6">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-              <FaFacebookSquare className="h-6 w-6 text-white" />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-              <FaInstagramSquare className="h-6 w-6 text-white" />
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-              <FaYoutubeSquare className="h-6 w-6 text-white" />
-            </a>
             <a
               href="https://www.linkedin.com/in/jessy-mathew-55318b99"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/10 hover:bg-white/40 transition-colors"
+              className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00acec]"
             >
-              <FaLinkedin className="h-6 w-6 text-white/80" />
+              <FaLinkedin className="h-6 w-6 text-white" />
             </a>
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div id="site-footer" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3 sm:py-4 text-ss font-teko text-center font-light text-white/70">
-          © {new Date().getFullYear()} CAMDEN IMPORTS & EXPORTS
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3 sm:py-4 text-ss font-teko text-center font-light text-white/70 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+          <span>© {new Date().getFullYear()} CAMDEN IMPORTS & EXPORTS</span>
+          <span className="hidden sm:inline text-white/30" aria-hidden="true">
+            |
+          </span>
+          <nav className="flex items-center gap-3" aria-label="Legal">
+            <Link
+              to="/privacy"
+              className="hover:text-[#00acec] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00acec] rounded"
+            >
+              Privacy
+            </Link>
+            <Link
+              to="/terms"
+              className="hover:text-[#00acec] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00acec] rounded"
+            >
+              Terms
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>

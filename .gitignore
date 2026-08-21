@@ -13,6 +13,10 @@ dist-ssr
 *.local
 .env
 
+# Do not ship vendor mailer or Vite cache under public/
+public/PHPMailer-master/
+public/camden/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

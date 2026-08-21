@@ -69,8 +69,8 @@ export const Description = () => {
             "
           >
             <div className="w-full max-w-5xl text-center px-4 sm:px-6 md:px-10 py-6">
-              <h2
-                className={`text-white text-xl sm:text-xl md:text-[80px]
+              <h1
+                className={`text-white text-xl sm:text-4xl md:text-[80px]
                             font-normal tracking-normal
                             leading-tight md:leading-relaxed
                             drop-shadow-sm transition-all duration-700 ease-out
@@ -78,7 +78,7 @@ export const Description = () => {
                 style={{ transitionDelay: "260ms" }}
               >
                 {s.title}
-              </h2>
+              </h1>
 
               {s.subtitle && (
                 <div className="flex justify-center">

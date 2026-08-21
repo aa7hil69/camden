@@ -13,9 +13,6 @@ module.exports = {
     extend: {
       fontFamily: {
         teko: ['Teko', 'system-ui', 'sans-serif'],
-        galgo: ['Galgo', 'system-ui', 'sans-serif'],
-        oswald: ['Oswald', 'system-ui', 'sans-serif'],
-        // add more custom fonts here!
       },
       keyframes: {
         centerGrow: {

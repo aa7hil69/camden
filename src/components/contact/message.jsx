@@ -1,19 +1,13 @@
 import React, { useState } from "react";
-import { FaMapMarkerAlt, FaEnvelope, FaPhone } from "react-icons/fa";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faInstagram,
-  faYoutube,
-  faLinkedin,
-  faFacebook,
-} from "@fortawesome/free-brands-svg-icons";
+import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaLinkedin } from "react-icons/fa";
 import { usePlay } from "../../hooks/usePlay";
+import { Button } from "../ui/Button";
 
 export const Message = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  const [generalError, setGeneralError] = useState("");
+  const [status, setStatus] = useState({ type: null, message: "" });
 
   // Anim refs
   const headingRef = usePlay().ref;
@@ -46,13 +40,15 @@ export const Message = () => {
       const next = { ...prev };
       if (name === "name")
         next.name = value.trim() ? "" : "Please enter a name.";
-      if (name === "email")
-        next.email = value.trim() ? "" : "Please enter an email.";
+      if (name === "email") {
+        if (!value.trim()) next.email = "Please enter an email.";
+        else next.email = isEmail(value.trim()) ? "" : "Enter a valid email address.";
+      }
       if (name === "message")
         next.message = value.trim() ? "" : "Please enter a message.";
       return next;
     });
-    setGeneralError("");
+    setStatus({ type: null, message: "" });
   };
 
   const handleEmailKeyDown = (e) => {
@@ -74,14 +70,17 @@ export const Message = () => {
     const er = validate(form);
     setErrors(er);
     if (Object.values(er).some(Boolean)) {
-      setGeneralError("Please correct the highlighted fields.");
+      setStatus({
+        type: "error",
+        message: "Please correct the highlighted fields.",
+      });
       return;
     }
 
     setSubmitting(true);
-    setGeneralError("");
+    setStatus({ type: null, message: "" });
     try {
-      const res = await fetch("http://localhost:8080/send.php", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -97,12 +96,16 @@ export const Message = () => {
 
       setForm({ name: "", email: "", message: "" });
       setErrors({});
-      setGeneralError(
-        "Message sent successfully. We’ll get back to you shortly."
-      );
+      setStatus({
+        type: "success",
+        message: "Message sent successfully. We’ll get back to you shortly.",
+      });
     } catch (err) {
       console.error(err);
-      setGeneralError("Something went wrong. Please try again later.");
+      setStatus({
+        type: "error",
+        message: "Something went wrong. Please try again later.",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -135,12 +138,12 @@ export const Message = () => {
         <div className="grid grid-cols-1 gap-10 place-items-center">
           {/* Left content */}
           <div className="relative z-10 w-full max-w-xl text-center lg:text-left">
-            <h2
+            <h1
               ref={headingRef}
               className="text-white text-4xl sm:text-5xl md:text-[72px] font-normal font-teko slide-in-left slide-delay-1 mt-6 sm:mt-3 leading-[1.05]"
             >
               WRITE US ANY MESSAGE
-            </h2>
+            </h1>
             <p
               ref={paragraphRef}
               className="mt-3 text-white/95 text-sm sm:text-base font-light font-teko leading-6 slide-in-left slide-delay-2"
@@ -150,46 +153,32 @@ export const Message = () => {
             </p>
 
             <div
+              role="status"
               aria-live="polite"
               className={[
                 "mt-3 min-h-[1.25rem] text-sm font-medium",
-                generalError
-                  ? generalError.startsWith("Message sent")
-                    ? "text-emerald-300"
-                    : "text-rose-300"
-                  : "text-transparent",
+                status.type === "success"
+                  ? "text-emerald-300"
+                  : status.type === "error"
+                    ? "text-rose-300"
+                    : "text-transparent",
               ].join(" ")}
             >
-              {generalError || "•"}
+              {status.message || "•"}
             </div>
 
             <div
               ref={socialsRef}
               className="flex flex-wrap items-center justify-center lg:justify-start gap-5 pt-4 slide-in-left slide-delay-3"
             >
-              <a href="#" aria-label="Instagram" className="p-1 -m-1">
-                <FontAwesomeIcon
-                  icon={faInstagram}
-                  className="text-white hover:text-[#00acec] transition-colors duration-200 text-2xl"
-                />
-              </a>
-              <a href="#" aria-label="YouTube" className="p-1 -m-1">
-                <FontAwesomeIcon
-                  icon={faYoutube}
-                  className="text-white hover:text-[#00acec] transition-colors duration-200 text-2xl"
-                />
-              </a>
-              <a href="https://www.linkedin.com/in/jessy-mathew-55318b99" aria-label="LinkedIn" className="p-1 -m-1">
-                <FontAwesomeIcon
-                  icon={faLinkedin}
-                  className="text-white hover:text-[#00acec] transition-colors duration-200 text-2xl"
-                />
-              </a>
-              <a href="#" aria-label="Facebook" className="p-1 -m-1">
-                <FontAwesomeIcon
-                  icon={faFacebook}
-                  className="text-white hover:text-[#00acec] transition-colors duration-200 text-2xl"
-                />
+              <a
+                href="https://www.linkedin.com/in/jessy-mathew-55318b99"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="p-1 -m-1 text-white hover:text-[#00acec] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00acec] rounded"
+              >
+                <FaLinkedin className="text-2xl" aria-hidden />
               </a>
             </div>
           </div>
@@ -212,7 +201,7 @@ export const Message = () => {
                     placeholder="Your name"
                     required
                     aria-invalid={Boolean(errors.name) || undefined}
-                    aria-errormessage={errors.name ? "err-name" : undefined}
+                    aria-describedby={errors.name ? "err-name" : undefined}
                     className={[
                       "w-full rounded-md bg-white text-black placeholder-black/70 focus:border-[#00acec] focus:ring-2 focus:ring-[#00acec]/40 px-3 py-2.5 text-sm outline-none transition",
                       errors.name
@@ -224,11 +213,11 @@ export const Message = () => {
                     id="err-name"
                     className={[
                       "mt-1 text-xs",
-                      errors.name ? "text-rose-300" : "text-transparent",
+                      errors.name ? "text-rose-300" : "sr-only",
                     ].join(" ")}
                     aria-live="polite"
                   >
-                    {errors.name || "placeholder"}
+                    {errors.name || ""}
                   </p>
                 </div>
 
@@ -247,7 +236,7 @@ export const Message = () => {
                     placeholder="you@example.com"
                     required
                     aria-invalid={Boolean(errors.email) || undefined}
-                    aria-errormessage={errors.email ? "err-email" : undefined}
+                    aria-describedby={errors.email ? "err-email" : undefined}
                     className={[
                       "w-full rounded-md bg-white text-black placeholder-black/70 focus:border-[#00acec] focus:ring-2 focus:ring-[#00acec]/40 px-3 py-2.5 text-sm outline-none transition",
                       errors.email
@@ -259,11 +248,11 @@ export const Message = () => {
                     id="err-email"
                     className={[
                       "mt-1 text-xs",
-                      errors.email ? "text-rose-300" : "text-transparent",
+                      errors.email ? "text-rose-300" : "sr-only",
                     ].join(" ")}
                     aria-live="polite"
                   >
-                    {errors.email || "placeholder"}
+                    {errors.email || ""}
                   </p>
                 </div>
               </div>
@@ -282,7 +271,7 @@ export const Message = () => {
                   placeholder="Type your message here..."
                   required
                   aria-invalid={Boolean(errors.message) || undefined}
-                  aria-errormessage={errors.message ? "err-message" : undefined}
+                  aria-describedby={errors.message ? "err-message" : undefined}
                   className={[
                     "w-full rounded-md bg-white text-black placeholder-black/70 focus:border-[#00acec] focus:ring-2 focus:ring-[#00acec]/40 px-3 py-2.5 text-sm outline-none transition resize-y",
                     errors.message
@@ -294,11 +283,11 @@ export const Message = () => {
                   id="err-message"
                   className={[
                     "mt-1 text-xs",
-                    errors.message ? "text-rose-300" : "text-transparent",
+                    errors.message ? "text-rose-300" : "sr-only",
                   ].join(" ")}
                   aria-live="polite"
                 >
-                  {errors.message || "placeholder"}
+                  {errors.message || ""}
                 </p>
               </div>
 
@@ -314,16 +303,15 @@ export const Message = () => {
 
               {/* Submit */}
               <div ref={submitRef} className="slide-in-right slide-delay-3">
-                <div className="group relative rounded-xl overflow-hidden w-full sm:w-56 mx-auto shadow-md transition hover:shadow-lg">
-                  <span className="pointer-events-none absolute inset-0 [clip-path:polygon(60%_100%,100%_30%,100%_100%)] bg-black/15 translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-600 ease-out" />
-                  <button
+                <div className="w-full sm:w-56 mx-auto shadow-md rounded-md overflow-hidden">
+                  <Button
                     type="submit"
+                    variant="submit"
                     disabled={submitting}
-                    className="w-full inline-flex items-center justify-center rounded-md bg-[#00acec] text-black hover:text-white px-3 py-3 text-sm font-teko disabled:opacity-60"
                     aria-busy={submitting || undefined}
                   >
                     {submitting ? "Sending..." : "Send Message"}
-                  </button>
+                  </Button>
                 </div>
               </div>
             </form>

@@ -1,20 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --font-galgo: "Galgo Condensed", "Helvetica Neue", Arial, sans-serif;
-  --font-oswald: "Oswald", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-teko: "Teko", Arial, sans-serif;
-}
-
-@font-face {
-  font-family: "Galgo Condensed";
-  src:
-    url("/fonts/galgo-condensed/Galgo.woff") format("woff"),
-    url("/fonts/galgo-condensed/Galgo.ttf") format("truetype"),
-    url("/fonts/galgo-condensed/Galgo.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
 }
 
 @font-face {
@@ -55,38 +42,6 @@
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-}
-
-
-/* Oswald (light/regular/bold) */
-@font-face {
-  font-family: "Oswald";
-  src: url("/fonts/oswald/Oswald-Light.ttf") format("truetype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Oswald";
-  src: url("/fonts/oswald/Oswald-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Oswald";
-  src: url("/fonts/oswald/Oswald-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Optional: utility shortcuts */
-.font-galgo {
-  font-family: "Galgo Condensed", "Helvetica Neue", Arial, sans-serif;
-}
-.font-oswald {
-  font-family: "Oswald", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -209,101 +164,6 @@ html, body {
 /* IMPORTANT: Narrow the global transition override so it does not clobber generic .transition usage */
 body.app-ready .smooth-transform {
   @apply transition-transform duration-1000 ease-in-out;
-}
-
-@keyframes wipe-ltr {
-  0%   { clip-path: inset(0 100% 0 0); }
-  100% { clip-path: inset(0 0 0 0); }
-}
-@keyframes slide-ltr {
-  0%   { transform: translateX(-50px); }
-  100% { transform: translateX(0); }
-}
-@keyframes content-pop {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-body.app-ready .card-wipe {
-  position: relative;
-  clip-path: inset(0 100% 0 0); /* fully hidden from right side */
-  opacity: 0;                   /* fade controlled by animations below */
-  will-change: clip-path, opacity, transform;
-}
-
-.card-wipe {
-  position: relative;
-  clip-path: inset(0 100% 0 0); /* fully hidden from right side */
-  opacity: 0;                   /* fade controlled by animations below */
-  will-change: clip-path, opacity, transform;
-}
-
-body.app-ready .card-wipe-play {
-  --wipe-delay: 0s;
-  animation:
-    wipe-ltr 700ms ease-out var(--wipe-delay) forwards,
-    content-pop 500ms ease-out var(--wipe-delay) forwards;
-}
-.card-wipe-play {
-  --wipe-delay: 0s;
-  animation:
-    wipe-ltr 700ms ease-out var(--wipe-delay) forwards,
-    content-pop 500ms ease-out var(--wipe-delay) forwards;
-}
-
-body.app-ready .card-wipe-play-ltr {
-  --wipe-delay: 0s; /* override per card via inline style or a stagger class */
-  animation:
-    wipe-ltr 700ms ease-out var(--wipe-delay) forwards,
-    slide-ltr 700ms cubic-bezier(.22,.61,.36,1) var(--wipe-delay) forwards,
-    content-pop 500ms ease-out var(--wipe-delay) forwards;
-}
-
-.card-wipe-play-ltr {
-  --wipe-delay: 0s; /* override per card via inline style or a stagger class */
-  animation:
-    wipe-ltr 700ms ease-out var(--wipe-delay) forwards,
-    slide-ltr 700ms cubic-bezier(.22,.61,.36,1) var(--wipe-delay) forwards,
-    content-pop 500ms ease-out var(--wipe-delay) forwards;
-}
-
-/* Optional stagger delays for a nice cascade */
-body.app-ready .card-stagger-1 { animation-delay: 0.10s, 0.10s; }
-body.app-ready .card-stagger-2 { animation-delay: 0.20s, 0.20s; }
-body.app-ready .card-stagger-3 { animation-delay: 0.30s, 0.30s; }
-body.app-ready .card-stagger-4 { animation-delay: 0.40s, 0.40s; }
-body.app-ready .card-stagger-5 { animation-delay: 0.50s, 0.50s; }
-
-@keyframes text-wipe {
-  0%   { opacity: 0; transform: translateX(-40px); }
-  100% { opacity: 1; transform: translateX(0); }
-}
-
-/* Default hidden state for text elements */
-body.app-ready .text-wipe {
-  opacity: 0;
-  transform: translateX(-40px);  /* shift left initially */
-  will-change: opacity, transform;
-}
-
-body.app-ready .text-wipe-play {
-  --wipe-delay: 0s;
-  animation: text-wipe 0.7s cubic-bezier(.22, .61, .36, 1) var(--wipe-delay) forwards;
-}
-
-body.app-ready .text-stagger-0 { --wipe-delay: 0s; }
-body.app-ready .text-stagger-1 { --wipe-delay: 0.2s; }
-body.app-ready .text-stagger-2 { --wipe-delay: 0.4s; }
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .card-wipe,
-  .card-wipe-play-ltr {
-    clip-path: inset(0 0 0 0) !important;
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-  }
 }
 
 @keyframes slide-in-left {
