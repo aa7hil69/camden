@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import fs from "fs";
 import path from "path";
 import {
   sendContactMail,
@@ -26,6 +27,18 @@ function readRequestJson(req) {
     });
     req.on("error", reject);
   });
+}
+
+function spaFallbackPlugin() {
+  return {
+    name: "spa-404",
+    closeBundle() {
+      const dist = path.resolve("dist");
+      const indexPath = path.join(dist, "index.html");
+      if (!fs.existsSync(indexPath)) return;
+      fs.copyFileSync(indexPath, path.join(dist, "404.html"));
+    },
+  };
 }
 
 function contactDevPlugin(mailEnv) {
@@ -74,7 +87,7 @@ export default defineConfig(({ mode }) => {
   const mailEnv = loadEnv(mode, process.cwd(), "");
 
   return {
-    plugins: [react(), tailwindcss(), contactDevPlugin(mailEnv)],
+    plugins: [react(), tailwindcss(), contactDevPlugin(mailEnv), spaFallbackPlugin()],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "src"),

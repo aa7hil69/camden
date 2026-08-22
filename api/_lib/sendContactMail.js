@@ -1,28 +1,15 @@
 import nodemailer from "nodemailer";
+import { sendContactResend } from "../../lib/sendContactResend.js";
+import { validateContactPayload } from "../../lib/validateContact.js";
 
-function readBodyFields(data = {}) {
-  return {
-    name: String(data.name ?? "").trim(),
-    email: String(data.email ?? "").trim(),
-    message: String(data.message ?? "").trim(),
-    website: String(data.website ?? "").trim(),
-  };
-}
-
-export function validateContactPayload(data) {
-  const fields = readBodyFields(data);
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email);
-
-  if (fields.website) {
-    return { ok: false, status: 422, error: "Invalid submission" };
-  }
-  if (!fields.name || !emailOk || !fields.message) {
-    return { ok: false, status: 422, error: "Invalid submission" };
-  }
-  return { ok: true, fields };
-}
+export { validateContactPayload };
 
 export async function sendContactMail(fields, env = process.env) {
+  if (env.RESEND_API_KEY) {
+    await sendContactResend(fields, env);
+    return;
+  }
+
   const user = env.SMTP_USER;
   const pass = env.SMTP_PASS;
   const inbox = env.CONTACT_INBOX;

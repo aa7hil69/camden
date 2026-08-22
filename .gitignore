@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 .env
+.dev.vars
+.wrangler
 
 # Do not ship vendor mailer or Vite cache under public/
 public/PHPMailer-master/
