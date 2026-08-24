@@ -9,7 +9,7 @@
   src: url("/fonts/teko/Teko-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 @font-face {
@@ -17,7 +17,7 @@
   src: url("/fonts/teko/Teko-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 @font-face {
@@ -25,7 +25,7 @@
   src: url("/fonts/teko/Teko-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 @font-face {
@@ -33,7 +33,7 @@
   src: url("/fonts/teko/Teko-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 @font-face {
@@ -41,7 +41,7 @@
   src: url("/fonts/teko/Teko-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 body {
