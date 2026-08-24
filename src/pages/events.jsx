@@ -3,6 +3,7 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
 import { Button } from "../components/ui/Button";
+import { EventsListSkeleton } from "../components/ui/Skeleton";
 
 export const Events = () => {
   const [events, setEvents] = useState([]);
@@ -59,11 +60,7 @@ export const Events = () => {
           Events
         </h1>
 
-        {loading && (
-          <p className="text-center text-white/80" role="status">
-            Loading events…
-          </p>
-        )}
+        {loading && <EventsListSkeleton count={2} />}
 
         {!loading && error && (
           <div className="text-center space-y-4 max-w-lg mx-auto">

@@ -7,6 +7,7 @@ import {
   useAnimationFrame,
   useMotionValue,
 } from "framer-motion";
+import { GallerySkeleton } from "../ui/Skeleton";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 50, filter: "blur(6px)" },
@@ -95,7 +96,7 @@ export const Gallery = () => {
 
   return (
     <>
-      <section className="bg-[#32348d] py-4" id="gallery">
+      <section className="bg-[#32348d] pt-4 pb-14 md:pb-20" id="gallery">
         <div className="mx-auto max-w-7xl px-4">
           <motion.div
             ref={headerRef}
@@ -115,9 +116,7 @@ export const Gallery = () => {
 
         <div className="mx-auto max-w-7xl px-4 mt-8">
           {loading ? (
-            <p className="text-center text-white/80" role="status">
-              Loading gallery…
-            </p>
+            <GallerySkeleton count={4} />
           ) : error ? (
             <p className="text-center text-rose-300">{error}</p>
           ) : items.length ? (

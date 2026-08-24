@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView, useAnimation } from "framer-motion";
+import { ClientsSkeleton } from "../ui/Skeleton";
 
 /* ---------------- Animations ---------------- */
 
@@ -36,19 +37,15 @@ const chunkArray = (arr, size) => {
 
 /* ---------------- Panel ---------------- */
 
-function Panel({ items = [], loading, error }) {
+function Panel({ items = [], error }) {
   return (
     <section className="rounded-2xl bg-[#112a63] p-4 text-white">
-      {loading && <p className="text-sm text-slate-300">Loading...</p>}
       {error && <p className="text-sm text-red-300">Failed to load clients</p>}
 
-      {!loading && !error && (
+      {!error && (
         <ul className="space-y-2 text-sm">
           {items.map((name, i) => (
-            <li
-              key={i}
-              className="rounded bg-[#1a3570] px-3 py-2"
-            >
+            <li key={i} className="rounded bg-[#1a3570] px-3 py-2">
               {name}
             </li>
           ))}
@@ -129,33 +126,20 @@ export const Clients = () => {
           </motion.p>
         </div>
 
-        {loading && (
-          <p className="text-center text-white/70 mt-10">
-            Loading clients...
-          </p>
-        )}
+        {loading && <ClientsSkeleton />}
 
         {error && (
-          <p className="text-center text-red-400 mt-10">
-            {error}
-          </p>
+          <p className="text-center text-red-400 mt-10">{error}</p>
         )}
 
         {!loading && !error && clients.length === 0 && (
-          <p className="text-center text-white/70 mt-10">
-            No clients found.
-          </p>
+          <p className="text-center text-white/70 mt-10">No clients found.</p>
         )}
 
         {!loading && !error && clients.length > 0 && (
           <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
             {chunks.map((chunk, idx) => (
-              <Panel
-                key={idx}
-                items={chunk}
-                loading={loading}
-                error={error}
-              />
+              <Panel key={idx} items={chunk} error={error} />
             ))}
           </div>
         )}
