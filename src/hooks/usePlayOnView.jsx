@@ -1,40 +1,65 @@
 import { useEffect, useRef } from "react";
 
-export function usePlayOnView({ threshold = 0.15, root = null, rootMargin = "0px 0px -5% 0px", once = true } = {}) {
+/** Adds `.play` only when the element scrolls into view (after boot splash). */
+export function usePlayOnView({
+  threshold = 0.2,
+  root = null,
+  rootMargin = "0px 0px -12% 0px",
+  once = true,
+} = {}) {
   const ref = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Respect reduced motion: just add play immediately
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       el.classList.add("play");
       return;
     }
 
-    // Wait until splash is done to avoid early class toggles
-    if (!document.body.classList.contains("app-ready")) {
-      const id = requestAnimationFrame(() => {
+    let io;
+    let mo;
+    let cancelled = false;
+
+    const setupObserver = () => {
+      if (cancelled || !el || io) return;
+
+      io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            el.classList.add("play");
+            if (once) io.unobserve(entry.target);
+          });
+        },
+        { threshold, root, rootMargin }
+      );
+
+      io.observe(el);
+    };
+
+    if (document.body.classList.contains("app-ready")) {
+      setupObserver();
+    } else {
+      mo = new MutationObserver(() => {
         if (document.body.classList.contains("app-ready")) {
-          el.classList.add("play");
+          mo.disconnect();
+          setupObserver();
         }
       });
-      return () => cancelAnimationFrame(id);
+      mo.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
     }
 
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          el.classList.add("play");
-          if (once) io.unobserve(entry.target);
-        }
-      });
-    }, { threshold, root, rootMargin });
-
-    io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      cancelled = true;
+      mo?.disconnect();
+      io?.disconnect();
+    };
   }, [threshold, root, rootMargin, once]);
 
   return { ref };

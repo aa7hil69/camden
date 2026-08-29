@@ -3,6 +3,7 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Reveal } from "../components/Reveal";
 import { Button } from "../components/ui/Button";
+import { SectionTitle } from "../components/ui/SectionTitle";
 
 export const Products = () => {
   return (
@@ -12,9 +13,12 @@ export const Products = () => {
         <p className="text-[#00acec] text-sm sm:text-base tracking-wide uppercase">
           Products
         </p>
-        <h1 className="mt-3 text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide">
+        <SectionTitle
+          as="h1"
+          className="mt-3 text-4xl sm:text-5xl md:text-6xl font-normal tracking-wide"
+        >
           Coming soon
-        </h1>
+        </SectionTitle>
         <p className="mt-5 text-white/85 text-sm sm:text-base font-light leading-relaxed max-w-xl mx-auto">
           We are preparing our product catalogue for Camden Imports &amp;
           Exports. In the meantime, reach out and we will share current

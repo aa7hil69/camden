@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { usePlayOnView } from "../../hooks/usePlayOnView";
 
 const slides = [
   {
@@ -11,14 +12,8 @@ const slides = [
 ];
 
 export const Description = () => {
-  const [index] = useState(0);
-
-  // Delay text animation until after mount
-  const [entered, setEntered] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setEntered(true), 50);
-    return () => clearTimeout(t);
-  }, []);
+  const { ref: titleRef } = usePlayOnView({ threshold: 0.2 });
+  const { ref: subtitleRef } = usePlayOnView({ threshold: 0.2 });
 
   return (
     <section
@@ -32,7 +27,6 @@ export const Description = () => {
         text-center
       "
     >
-      {/* Blurred logo background (behind everything) */}
       <div
         className="
           pointer-events-none absolute inset-0 z-0
@@ -46,18 +40,13 @@ export const Description = () => {
         aria-hidden="true"
       />
 
-      {/* Contrast overlay: keep semi-transparent so background stays visible */}
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{ backgroundColor: "rgba(50,52,141,0.85)" }}
         aria-hidden="true"
       />
 
-      {/* Foreground content above both */}
-      <div
-        className="relative z-[1] w-full flex -translate-y-4 md:-translate-y-6"
-        style={{ transform: `translateX(-${index * 100}%)`, transition: "0.4s" }}
-      >
+      <div className="relative z-[1] w-full flex -translate-y-4 md:-translate-y-6">
         {slides.map((s) => (
           <div
             key={s.id}
@@ -70,12 +59,11 @@ export const Description = () => {
           >
             <div className="w-full max-w-5xl text-center px-4 sm:px-6 md:px-10 py-6">
               <h1
-                className={`text-white text-xl sm:text-4xl md:text-[80px]
+                ref={titleRef}
+                className="text-white text-xl sm:text-4xl md:text-[80px]
                             font-normal tracking-normal
                             leading-tight md:leading-relaxed
-                            drop-shadow-sm transition-all duration-700 ease-out
-                            ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-                style={{ transitionDelay: "260ms" }}
+                            drop-shadow-sm slide-in-left slide-delay-1"
               >
                 {s.title}
               </h1>
@@ -83,13 +71,12 @@ export const Description = () => {
               {s.subtitle && (
                 <div className="flex justify-center">
                   <p
-                    className={`text-sm sm:text-sm md:text-sm
+                    ref={subtitleRef}
+                    className="text-sm sm:text-sm md:text-sm
                                 font-normal leading-6 sm:leading-7 md:leading-7
                                 text-white max-w-[70ch]
-                                transition-all duration-700 ease-out
                                 mt-4 sm:mt-5
-                                ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-                    style={{ transitionDelay: "480ms" }}
+                                slide-in-left slide-delay-2"
                   >
                     {s.subtitle}
                   </p>

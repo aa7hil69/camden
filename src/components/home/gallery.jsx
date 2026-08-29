@@ -2,27 +2,14 @@ import React, { useEffect, useState, useRef } from "react";
 import {
   motion,
   AnimatePresence,
-  useAnimation,
-  useInView,
   useAnimationFrame,
   useMotionValue,
 } from "framer-motion";
 import { GallerySkeleton } from "../ui/Skeleton";
+import { SectionTitle } from "../ui/SectionTitle";
+import { withMinSkeletonTime } from "../../utils/withMinSkeletonTime";
 
-const slideInFromRight = {
-  hidden: { opacity: 0, x: 50, filter: "blur(6px)" },
-  show: {
-    opacity: 1,
-    x: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
-  },
-};
-
-const textStagger = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
-};
+const viewportOnce = { once: true, amount: 0.35 };
 
 export const Gallery = () => {
   const [items, setItems] = useState([]);
@@ -31,18 +18,11 @@ export const Gallery = () => {
   const [active, setActive] = useState(null);
   const closeBtnRef = useRef(null);
 
-  const headerRef = useRef(null);
-  const headerInView = useInView(headerRef, { amount: 0.6 });
-  const headerControls = useAnimation();
-
-  useEffect(() => {
-    headerControls.start(headerInView ? "show" : "hidden");
-  }, [headerInView, headerControls]);
-
   useEffect(() => {
     let ignore = false;
 
     async function fetchGallery() {
+      const startedAt = Date.now();
       try {
         const res = await fetch("/api/gallery");
         if (!res.ok) throw new Error("Failed to fetch gallery");
@@ -69,6 +49,7 @@ export const Gallery = () => {
           setError("Unable to load gallery images right now.");
         }
       } finally {
+        await withMinSkeletonTime(startedAt, 2000);
         if (!ignore) setLoading(false);
       }
     }
@@ -98,20 +79,9 @@ export const Gallery = () => {
     <>
       <section className="bg-[#32348d] pt-4 pb-14 md:pb-20" id="gallery">
         <div className="mx-auto max-w-7xl px-4">
-          <motion.div
-            ref={headerRef}
-            variants={textStagger}
-            initial="hidden"
-            animate={headerControls}
-            className="text-center"
-          >
-            <motion.h2
-              variants={slideInFromRight}
-              className="text-white text-3xl sm:text-4xl md:text-5xl font-teko tracking-wide"
-            >
-              Gallery
-            </motion.h2>
-          </motion.div>
+          <SectionTitle className="text-center text-white text-3xl sm:text-4xl md:text-5xl font-teko tracking-wide">
+            Gallery
+          </SectionTitle>
         </div>
 
         <div className="mx-auto max-w-7xl px-4 mt-8">
@@ -120,11 +90,18 @@ export const Gallery = () => {
           ) : error ? (
             <p className="text-center text-rose-300">{error}</p>
           ) : items.length ? (
-            <AnimatedGrid
-              items={items}
-              onOpen={setActive}
-              pausedExternally={!!active}
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={viewportOnce}
+              transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+            >
+              <AnimatedGrid
+                items={items}
+                onOpen={setActive}
+                pausedExternally={!!active}
+              />
+            </motion.div>
           ) : (
             <p className="text-center text-white/80">
               No gallery images are available yet.
@@ -256,9 +233,7 @@ const AnimatedGrid = ({ items, onOpen, pausedExternally }) => {
             </div>
 
             <div className="px-4 py-3">
-              <h3 className="text-white text-sm font-semibold">
-                {img.title}
-              </h3>
+              <h3 className="text-white text-sm font-semibold">{img.title}</h3>
               <p className="text-white/70 text-xs line-clamp-3">
                 {img.description}
               </p>

@@ -4,6 +4,8 @@ import { Footer } from "../components/Footer";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
 import { Button } from "../components/ui/Button";
 import { EventsListSkeleton } from "../components/ui/Skeleton";
+import { SectionTitle } from "../components/ui/SectionTitle";
+import { withMinSkeletonTime } from "../utils/withMinSkeletonTime";
 
 export const Events = () => {
   const [events, setEvents] = useState([]);
@@ -14,6 +16,7 @@ export const Events = () => {
     let ignore = false;
 
     async function loadEvents() {
+      const startedAt = Date.now();
       try {
         const res = await fetch("/api/events");
         if (!res.ok) throw new Error("Failed to fetch events");
@@ -41,6 +44,7 @@ export const Events = () => {
           setError("Unable to load events right now. Please try again later.");
         }
       } finally {
+        await withMinSkeletonTime(startedAt, 2000);
         if (!ignore) setLoading(false);
       }
     }
@@ -56,9 +60,12 @@ export const Events = () => {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 pt-20 md:pt-16 pb-16">
-        <h1 className="text-4xl md:text-5xl font-teko tracking-wide text-center mb-16">
+        <SectionTitle
+          as="h1"
+          className="text-4xl md:text-5xl font-teko tracking-wide text-center mb-16"
+        >
           Events
-        </h1>
+        </SectionTitle>
 
         {loading && <EventsListSkeleton count={2} />}
 

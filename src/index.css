@@ -196,64 +196,62 @@ html { scrollbar-color: #4a4fc2 transparent; scrollbar-width: thin; }
 ::-webkit-scrollbar-thumb { background-color: #4a4fc2; border-radius: 9999px; border: 0 solid transparent; }
 }
 
-body.app-ready .slide-in-left {
+body.app-ready .slide-in-left,
+body.app-ready .slide-in-right {
   opacity: 0;
+}
+
+/* Only animate once scrolled into view (`.play` from usePlay / usePlayOnView) */
+body.app-ready .slide-in-left.play {
   animation: slide-in-left 0.7s ease-out forwards;
 }
 
-body.app-ready .slide-in-right {
-  opacity: 0;
+body.app-ready .slide-in-right.play {
   animation: slide-in-right 0.7s ease-out forwards;
 }
+
 /* Ensure animated elements start hidden even before body.app-ready is set */
 .slide-in-left,
 .slide-in-right {
   opacity: 0;
 }
 
-/* When play is added (by the hook), allow them to become visible */
-.slide-in-left.play,
-.slide-in-right.play {
-  opacity: 1;
-}
-
-/* Optional: Add stagger delays */
-body.app-ready .slide-delay-0 {
+/* Optional: Add stagger delays (applied when `.play` starts the animation) */
+body.app-ready .slide-in-left.play.slide-delay-0,
+body.app-ready .slide-in-right.play.slide-delay-0 {
   animation-delay: 0s;
 }
 
-
-body.app-ready .slide-delay-1 {
+body.app-ready .slide-in-left.play.slide-delay-1,
+body.app-ready .slide-in-right.play.slide-delay-1 {
   animation-delay: 0.2s;
 }
 
-body.app-ready .slide-delay-2 {
+body.app-ready .slide-in-left.play.slide-delay-2,
+body.app-ready .slide-in-right.play.slide-delay-2 {
   animation-delay: 0.4s;
 }
 
 .no-fade.opacity-0 { opacity: 1 !important; }
 .no-fade.opacity-100 { opacity: 1 !important; }
-body.app-ready .slide-delay-3 {
+
+body.app-ready .slide-in-left.play.slide-delay-3,
+body.app-ready .slide-in-right.play.slide-delay-3 {
   animation-delay: 0.6s;
 }
 
-body.app-ready .slide-delay-4 {
+body.app-ready .slide-in-left.play.slide-delay-4,
+body.app-ready .slide-in-right.play.slide-delay-4 {
   animation-delay: 0.8s;
+}
+
+body.app-ready .slide-in-left.play.slide-delay-5,
+body.app-ready .slide-in-right.play.slide-delay-5 {
+  animation-delay: 1s;
 }
 
 textarea {
   resize: none;
-}
-
-
-body.app-ready .slide-in-left { opacity: 0; }
-body.app-ready .slide-in-left.play {
-  animation: slide-in-left 0.7s ease-out forwards;
-}
-
-body.app-ready .slide-in-right { opacity: 0; }
-body.app-ready .slide-in-right.play {
-  animation: slide-in-right 0.7s ease-out forwards;
 }
 
 /* Hide the floating scroll-to-top button when the mobile nav is open */

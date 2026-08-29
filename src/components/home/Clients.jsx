@@ -1,30 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useInView, useAnimation } from "framer-motion";
+import React, { useEffect, useMemo, useState } from "react";
 import { ClientsSkeleton } from "../ui/Skeleton";
-
-/* ---------------- Animations ---------------- */
-
-const slideInFromLeft = {
-  hidden: { opacity: 0, x: -50, filter: "blur(6px)" },
-  show: {
-    opacity: 1,
-    x: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
-  },
-};
-
-const slideUp = {
-  hidden: { opacity: 0, y: 24, filter: "blur(6px)" },
-  show: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
-  },
-};
-
-/* ---------------- Helpers ---------------- */
+import { SectionTitle } from "../ui/SectionTitle";
+import { withMinSkeletonTime } from "../../utils/withMinSkeletonTime";
+import { usePlayOnView } from "../../hooks/usePlayOnView";
 
 const chunkArray = (arr, size) => {
   if (!Array.isArray(arr) || size <= 0) return [];
@@ -34,8 +12,6 @@ const chunkArray = (arr, size) => {
   }
   return out;
 };
-
-/* ---------------- Panel ---------------- */
 
 function Panel({ items = [], error }) {
   return (
@@ -55,18 +31,17 @@ function Panel({ items = [], error }) {
   );
 }
 
-/* ---------------- Clients ---------------- */
-
 export const Clients = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { ref: blurbRef } = usePlayOnView({ threshold: 0.25 });
 
-  // 🔹 Same fetch structure as Events.jsx
   useEffect(() => {
     let ignore = false;
 
     async function fetchClients() {
+      const startedAt = Date.now();
       try {
         const res = await fetch("/api/clients");
         if (!res.ok) throw new Error("Failed to fetch clients");
@@ -82,6 +57,7 @@ export const Clients = () => {
         console.error("Clients error:", err);
         if (!ignore) setError("Unable to load clients");
       } finally {
+        await withMinSkeletonTime(startedAt, 2000);
         if (!ignore) setLoading(false);
       }
     }
@@ -94,36 +70,22 @@ export const Clients = () => {
 
   const chunks = useMemo(() => chunkArray(clients, 12), [clients]);
 
-  const headerRef = useRef(null);
-  const headerInView = useInView(headerRef, { amount: 0.6 });
-  const headerControls = useAnimation();
-
-  useEffect(() => {
-    headerControls.start(headerInView ? "show" : "hidden");
-  }, [headerInView, headerControls]);
-
   return (
     <div id="clients" className="min-h-screen bg-[#32348d] text-white px-4">
       <div className="py-16 max-w-7xl mx-auto">
-        <div ref={headerRef} className="text-center">
-          <motion.h2
-            initial="hidden"
-            animate={headerControls}
-            variants={slideInFromLeft}
-            className="text-2xl sm:text-3xl md:text-4xl font-teko"
-          >
+        <div className="text-center">
+          <SectionTitle className="text-2xl sm:text-3xl md:text-4xl font-teko">
             Our Clients
-          </motion.h2>
+          </SectionTitle>
 
-          <motion.p
-            variants={slideUp}
-            initial="hidden"
-            animate={headerControls}
-            className="mt-4 text-sm sm:text-base text-slate-200 max-w-2xl mx-auto"
+          <p
+            ref={blurbRef}
+            className="mt-4 text-sm sm:text-base text-slate-200 max-w-2xl mx-auto slide-in-left slide-delay-2"
           >
-         Over the years, we have partnered with leading organizations, corporations, and institutions across the region.
-            Here are some of the esteemed clients and associates who have trusted our services.
-          </motion.p>
+            Over the years, we have partnered with leading organizations,
+            corporations, and institutions across the region. Here are some of
+            the esteemed clients and associates who have trusted our services.
+          </p>
         </div>
 
         {loading && <ClientsSkeleton />}
