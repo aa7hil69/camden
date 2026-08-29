@@ -10,7 +10,7 @@
       content="Camden Imports & Exports — international trade and business solutions with expertise spanning Oman, India, and the UK."
     />
     <meta name="robots" content="index,follow" />
-    <link rel="canonical" href="https://camdenexim.com/" />
+    <link rel="canonical" href="https://www.camdenexim.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Camden Imports & Exports" />
@@ -19,8 +19,8 @@
       property="og:description"
       content="International trade and business solutions with expertise spanning Oman, India, and the UK."
     />
-    <meta property="og:url" content="https://camdenexim.com/" />
-    <meta property="og:image" content="https://camdenexim.com/logopics/logo.png" />
+    <meta property="og:url" content="https://www.camdenexim.com/" />
+    <meta property="og:image" content="https://www.camdenexim.com/logopics/logo.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Camden Imports & Exports" />
@@ -28,10 +28,17 @@
       name="twitter:description"
       content="International trade and business solutions with expertise spanning Oman, India, and the UK."
     />
-    <meta name="twitter:image" content="https://camdenexim.com/logopics/logo.png" />
+    <meta name="twitter:image" content="https://www.camdenexim.com/logopics/logo.png" />
 
     <title>Camden Imports & Exports</title>
 
+    <link
+      rel="preload"
+      href="/fonts/teko/Teko-Light.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
     <link
       rel="preload"
       href="/fonts/teko/Teko-Regular.ttf"
@@ -49,17 +56,24 @@
     <style>
       @font-face {
         font-family: "Teko";
+        src: url("/fonts/teko/Teko-Light.ttf") format("truetype");
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Teko";
         src: url("/fonts/teko/Teko-Regular.ttf") format("truetype");
         font-weight: 400;
         font-style: normal;
-        font-display: optional;
+        font-display: swap;
       }
       @font-face {
         font-family: "Teko";
         src: url("/fonts/teko/Teko-Medium.ttf") format("truetype");
         font-weight: 500;
         font-style: normal;
-        font-display: optional;
+        font-display: swap;
       }
       html,
       body {
